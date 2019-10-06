@@ -1,0 +1,61 @@
+/ -- forward to JS Client
+
+Any of the command below should check if a cookie is present, if it is not,
+a cookie is generated and sent to the client. There weill be a userid in that cookie.
+This id can be read from the client and displayed to the user for login on a different
+machine.
+
+/search/?q=<string>&t=<tag1>,<tag2>,...,<tagN>&tm=<i/e>&o=(h/l/t/a)
+              q -- string to search
+              t -- filter tags
+              tm -- exculde (e) or include (i) tags
+              * all search queries should be recorded (can be used to gauge interest
+                and to generate usage statistics)
+              * search results should be ordered from high/low/timestamp/alphabet
+
+/rate/<item id>/<rating>?t=<rating_type>
+              set rating <rating> for <item id> to <user id>
+              <rating> can be any number, Recommender Server should deal with this
+              * if t is present, can additionaly specify what dimension is used for rating
+              i.e. if it's a movies, are we rating the overall thing, the cast, the music,
+              the plot or something else...
+
+/ratings
+              get all ratings recorded so far
+              format is (sorted from largest to lowest) [(rating, item_id), ...]
+
+/recommendations/?o=(h/l)&n=num&
+              - return non-rated recommendations only!
+              o -- order, h is highest first, l is lowest first
+              n -- number of recommendations to return, limited to MAX_RECOMMENDATIONS
+              output format: [(rating, item_id), ...]
+
+/new_item/
+              make a new item, use POST or something
+              format:
+                {
+                 "title": "<title>",
+                 "text": "<text>", -- Use markdown formatting for text
+                 "rating": [(<type>, "<rating>"), ...], -- rating by the person creating a item
+                 "type": "item/tag"
+                 "connections": [(connection_type, ["<item1>", "<item2>", ...]), ...]
+                }
+              note for text: Make it full markdown support. If there are links in the text, process them accordingly,
+                             if there are images in text, process them.
+              * item's author should NOT be displayed anywhere, but still need to be stored for administrative
+                purposes (ban the user if adds unappropriate content...)
+              * keep time of creation
+
+/feedback/tag/<tag>
+/feedback/item/<item>
+/feedback/recommendation/<recommendation>
+/feedback/other/<tag>
+              a way for users to specify feedback/compaints about particular item, recommendation, or something else
+
+
+/set_order/<greaterItem>/<lowerItem>
+              specify a relative ordering between two items
+
+/add_integration/<service_name>/<service_user_name>
+              add integration with a foreigh server, i.e. MAL, ficbook, wikipedia, etc.
+              would need to write parsers for those first

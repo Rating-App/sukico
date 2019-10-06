@@ -26,3 +26,6 @@ def index():
                                          AO_sInteger = session.get('AO_sInteger')))
     return check_auth(resp)
 
+@app.route('/new_item/')
+def new_item():
+    return ""

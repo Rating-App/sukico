@@ -20,11 +20,29 @@ def check_auth(resp):
 
     return resp
 
-@app.route('/')
-def index():
-    resp = make_response(render_template('index.html',
+def make_page(page):
+    resp = make_response(render_template(page,
                                          AO_sInteger = session.get('AO_sInteger')))
     return check_auth(resp)
+
+@app.route('/')
+def index_page():
+    return make_page('index.html')
+
+@app.route('/about/')
+def about_page():
+    resp = make_response(render_template('about.html',
+                                         AO_sInteger = session.get('AO_sInteger'),
+                                         userid=request.cookies.get('userid')))
+    return check_auth(resp)
+
+@app.route('/contact/')
+def contact_page():
+    return make_page('contact.html')
+
+@app.route('/settings/')
+def settings_page():
+    return make_page('settings.html')
 
 @app.route('/new_item/')
 def new_item():

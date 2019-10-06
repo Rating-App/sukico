@@ -1,0 +1,56 @@
+/ -- forward to JS Client
+
+/register/ -- returns a long randomly generated user id
+              example {"userid": "7890dfea-29aa-4e89-b0b6-a035334996da"}
+
+/<user id>/search/?q=<string>&t=<tag1>,<tag2>,...,<tagN>&tm=<i/e>&o=(h/l/t/a)
+              q -- string to search
+              t -- filter tags
+              tm -- exculde (e) or include (i) tags
+              * all search queries should be recorded (can be used to gauge interest
+                and to generate usage statistics)
+              * search results should be ordered from high/low/timestamp/alphabet
+
+/<user id>/rate/<item id>/<rating>
+              set rating <rating> for <item id> to <user id>
+              <rating> can be any number, Recommender Server should deal with this
+
+/<user id>/ratings
+              get all ratings recorded so far
+              format is (sorted from largest to lowest) [(rating, item_id), ...]
+
+/<user id>/recommendations/?o=(h/l)&n=num&
+              - return non-rated recommendations only!
+              o -- order, h is highest first, l is lowest first
+              n -- number of recommendations to return, limited to MAX_RECOMMENDATIONS
+              output format: [(rating, item_id), ...]
+
+/<user id>/new/item/
+              make a new item, use POST or something
+              format:
+                {
+                 "title": "<title>",
+                 "text": "<text>", -- Use markdown formatting for text
+                 "tags": ["<tag1>", "<tag2>", ..., "<tagN>"],
+                 "rating": "<rating>", -- rating by the person creating a item
+                 "connections": [(connection_type, ["<tag1>", "<tag2>", ...]), ...]
+                }
+              note for text: Make it full markdown support. If there are links in the text, process them accordingly,
+                             if there are images in text, process them.
+              * item's author should NOT be displayed anywhere, but still need to be stored for administrative
+                purposes (ban the user if adds unappropriate content...)
+              * keep time of creation
+
+/<user id>/feedback/tag/<tag>
+/<user id>/feedback/item/<item>
+/<user id>/feddback/recommendation/<recommendation>
+/<user id>/feedback/other/<tag>
+              a way for users to specify feedback/compaints about particular item, recommendation, or something else
+
+
+/<user id>/set_order/<greaterItem>/<lowerItem>
+              specify a relative ordering between two items
+
+/<user id>/add_integration/<service_name>/<service_user_name>
+              add integration with a foreigh server, i.e. MAL, ficbook, wikipedia, etc.
+              would need to write parsers for those first

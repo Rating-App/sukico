@@ -1,0 +1,49 @@
+graph {
+    user1[label="User 1\nJS Client", style=filled, fillcolor=cyan]
+    user2[label="User 2\nTerminal Client", style=filled, fillcolor=cyan]
+    user3[label="User 3\nAndroid Client", style=filled, fillcolor=cyan]
+    user4[label="User 4\nBrowser Extension Client", style=filled, fillcolor=cyan]
+    user5[label="User 5\nTelegram Bot Client", style=filled, fillcolor=cyan]
+
+    json_api[label="REST JSON API",  style=filled, fillcolor=cyan]
+
+    main[label="Main Server", style=filled, fillcolor=green]
+    
+    db[label="Postgres Server", style=filled, fillcolor=green]
+
+    par_pool[label="Parser Pool Manager", style=filled, fillcolor=pink]
+
+    par1[label="Parser Server 1", style=filled, fillcolor=pink]
+    par2[label="Parser Server 2", style=filled, fillcolor=pink]
+    par3[label="Parser Server 3", style=filled, fillcolor=pink]
+
+    rec_pool[label="Recommender Pool Manager", style=filled, fillcolor=red]
+
+    rec1[label="Recommender Server 1", style=filled, fillcolor=red]
+    rec2[label="Recommender Server 2", style=filled, fillcolor=red]
+    rec3[label="Recommender Server 3", style=filled, fillcolor=red]
+    rec4[label="Recommender Server 4", style=filled, fillcolor=red]
+    
+    user1 -- json_api
+    user2 -- json_api
+    user3 -- json_api
+    user4 -- json_api
+    user5 -- json_api
+
+    json_api -- main
+
+    main -- db
+
+    db -- par_pool
+    par_pool -- par1
+    par_pool -- par2
+    par_pool -- par3
+
+    main -- rec_pool [label="rec data read only"]
+    db -- rec_pool [label="load changed only"]
+
+    rec_pool -- rec1
+    rec_pool -- rec2
+    rec_pool -- rec3
+    rec_pool -- rec4
+}

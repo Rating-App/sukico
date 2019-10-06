@@ -1,0 +1,4 @@
+To reset/create the database:
+    SK_APP=run_app.py flask resetdb
+To run the application:
+    ./run_app.py

@@ -1,0 +1,7 @@
+Tables (Fields):
+* User (user_id)
+* Item (item_id, item_title, item_text)
+* Rating (user_id, item_id, rating)
+
+* Connection (item_id, item_id, item_id) -- A, B, connection_type
+* Order (item_id, item_id) -- A, B s.t. A > B
